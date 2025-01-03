@@ -1,0 +1,468 @@
+* {
+  /*PROPIEDAD PARA INCLUIR EL PADDING O BORDER DENTRO DE LA CAJA SIN TENER QUE AGRANDARLA*/
+  box-sizing: border-box;
+  /*ELIMINA TODOS LOS MARGENES*/
+  margin: 0;
+}
+
+/*CONFIGURACION DE ETIQUETAS GENERALES*/
+
+    /*MARGEN FALSO*/
+    .fake-margin {
+        border: 0.25rem var(--page) solid;
+    }
+
+  /*IMAGEN: RESPONSIVE*/
+  img { 
+    max-width: 100%;
+    display: block;
+    object-fit: cover;
+  }
+
+  /*TAMAÑO DE TEXTO: RESPONSIVE*/
+  h1{  /*TITULO*/
+    font-size: clamp(2.5rem, 3.7vw, 5rem);  
+  }
+
+  h2{  /*SUBTITULO*/
+    font-size: clamp(1.8rem, 2.5vw, 3rem);   
+  }
+
+  p,a,li,label,h3{ /*TEXTO*/
+    font-size: clamp(1rem, 1.7vw, 2.3rem);   
+  }
+
+    h4 {/*TEXTO PEQUEÑO */
+        font-size: clamp(0.9rem, 1.5vw, 2rem);
+    }
+
+    /*OTRAS CONFIGURACIONES*/
+    a { 
+        text-decoration: none;
+    }
+
+    textarea {
+        font-size: 1rem;
+        resize: none;
+        color: var(--text);
+        background-color: var(--page);
+        width: 100%;
+    }
+
+input[type="text"], input[type="password"], input[type="email"], select, button {
+    height: 2.5rem;
+    font-size: 1rem;
+    background-color: var(--page);
+    color: var(--text);
+    margin: 0.5rem;
+}
+
+[type="file"] {
+    display: none;
+}
+
+button {
+    font-weight: bold;
+}
+
+    button:hover {
+        cursor: pointer;
+    }
+
+    li {
+        list-style-position: inside;
+    }
+
+  /*COLOR DE FONDO DE PAGINA*/
+  body{
+    background-color: var(--page);
+  }
+
+  /*COLOR DE TEXTO*/
+  h2,h3,h4,h5,i,a,p,li,label{
+    color: var(--text);
+  }
+
+  /*SOMBREADO DE TEXTO*/
+  h2,i,a{
+    text-shadow: 0.2rem 0.1rem 0.3rem var(--shadow01), 0 0 0.2rem var(--section), 0 0 0.5rem var(--shadow02); 
+  }
+
+    /*INPUT TIPO RADIO Y CHECKBOX*/
+    input[type="radio"], input[type="checkbox"] {
+        width: 1.25rem;
+        margin-left: 2.5rem;
+        margin-right: 0.5rem;
+    }
+
+/*CONFIGURACION DE CLASES PERSONALIZADAS*/
+
+  /*CAJA RESPONSIVE*/
+  .container{
+    max-width: 120rem;
+    width: 100%;
+  }
+
+  /*TITULO DE SECCION*/
+  .title{ 
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+    .textarea-container {
+        display: flex;
+        flex-direction: column;
+        align-items: end;
+        margin: 0.5rem;
+    }
+
+    .textarea-counter {
+        text-align: right;
+        width: 15%;
+    }
+
+    /*CONTENEDOR PARA GRUPOS DE INPUT TIPO RADIO Y CHECKBOX*/
+    .radio-container, .checkbox-container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+    /*GRUPOS DE INPUT TIPO RADIO Y CHECKBOX*/
+    .radio-item, .checkbox-item {
+        display: flex;
+        margin-bottom: 0.5rem;
+        margin-top: 0.5rem;
+    }
+
+    /*ICONO*/
+    .icon {
+        width: 5rem;
+        height: 5rem;
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+
+    /*Toggle*/
+    .toggle {
+        height: 3rem;
+        width: 100%;
+    }
+
+    .toggle__area {
+        position: relative;
+        display: inline-block;
+        width: 7rem;
+        height: 3rem;
+        border-radius: 1rem;
+    }
+
+    .toggle__button {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: var(--tag);
+        transition: .4s;
+        border-radius: 1rem;
+        display: grid;        
+        grid-template-columns: repeat(2, 1fr)
+    }
+
+        .toggle__action {
+            margin: auto;
+        }
+
+        .toggle__button:before {
+            position: absolute;
+            content: "";
+            height: 3rem;
+            width: 3.5rem;
+            background-color: var(--text);
+            transition: .4s;
+            border-radius: 1rem;
+            z-index: 1;
+        }
+
+    .toggle__check:checked + .toggle__button {
+        background-color: var(--page);
+    }
+
+        .toggle__check:checked + .toggle__button:before {
+            transform: translateX(3.5rem);
+        }
+
+  /*BOTON PARA VOLVER A LA PAGINA PRINCIPAL*/
+.home {
+    width: 5rem;
+    height: 5rem;
+    top: 87.5%;
+    left: 95%;
+    position: fixed;
+    z-index: 0;
+    background-image: url("/img/home.png");
+    background-size: contain;
+    transition: all 0.25s ease-in-out;
+}
+
+    .home:hover {
+        cursor: pointer;
+        scale: 1.25;
+    }
+
+  /*MASCARA DE OPACIDAD PARA IMAGENES DE FONDO*/
+  .mask{
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to var(--focus), rgba(0, 0, 0, 1) var(--percent), rgba(0, 0, 0, 0));
+  }
+
+/*REFLEJO PARA IMAGENES O DIVS CON IMAGENES DE FONDO*/
+    /*"--mirrorDirection" PUEDE TENER LOS SIGUIENTES VALORES: below, right, left, above*/
+    /*"--mirrorDistance" LA DISTANCIA ENTRE LA IMAGEN Y EL REFLEJO: 0.5rem, por ejemplo*/
+    /*"--reflectionDirection" LA DIRECCION DE LA MASCARA DE TRANSPARENCIA DEL REFLEJO: below, right, left, above*/
+    /*"--reflectionPower" LA INTENSIDAD DE LA TRANSPARENCIA: 0.9, por ejemplo*/
+    .mirror {
+        -webkit-box-reflect: var(--mirrorDirection) var(--mirrorDistance) linear-gradient(to var(--reflectionDirection), rgba(0,0,0,0.0), rgba(0,0,0,var(--reflectionPower)));
+    }
+
+/*TITULOS*/
+
+/*DEGRADADO DE COLOR*/
+.gradient {
+    background: linear-gradient(to var(--direction), var(--shadow01) var(--intensity01), var(--shadow02) var(--intensity02));
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+}
+
+/*PANEL ELECTRICO*/
+.electric { /*EFECTO PARPADEANTE*/
+    animation: panel 2s ease-in-out infinite;
+}
+
+@keyframes panel { /*PUNTOS DE PARPADEO*/
+    20%, 25%, 50% {
+        color: var(--text);
+        text-shadow: none;
+    }
+
+    0%, 19%, 21%, 24%, 26%, 49%, 51%, 100% { /*INTERVALOS DE LUZ CONSTANTE*/
+        color: var(--text);
+        text-shadow: 0 0 0.5rem var(--shadow01), 0 0 2.5rem var(--shadow01), 0 0 1.5rem var(--shadow01), 0 0 1rem var(--shadow01), 0 0 2rem var(--shadow02), 0 0 5rem var(--shadow02), 0 0 10rem var(--shadow02);
+    }
+}
+
+/*ILUMINACION POR LINTERNA*/
+@property --flashlight { /*CONSTANTE*/
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+
+.flashlight { /*FONDO EN FORMA CONICA*/
+    background-image: conic-gradient( from var(--flashlight) at 50% 0%, black 40%, gray, black 60%);
+    background-clip: text;
+    color: transparent;
+    animation: flashdance 3s ease-in-out infinite alternate;
+}
+
+@keyframes flashdance {
+    from {
+        --flashlight: 0.25turn
+    }
+
+    to {
+        --flashlight: -0.25turn
+    }
+}
+
+  /*BORDE PARA IMAGENES TRANSPARENTES SIN FONDO "PNG"*/
+  .shaper{
+    filter: drop-shadow(0.3rem 0.4rem 0.7rem var(--shape));
+  }
+
+    /*ANIMACIONES GENERALES*/
+    @keyframes FadeUp {
+
+        from {
+            opacity: 0;
+            transform: translateY(100%);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0%);
+        }
+    }
+
+    @keyframes FadeDown {
+
+        from {
+            opacity: 0;
+            transform: translateY(-100%);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0%);
+        }
+    }
+
+    @keyframes FadeLeft {
+
+        from {
+            opacity: 0;
+            transform: translateX(100%);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0%);
+        }
+    }
+
+    @keyframes FadeRight {
+
+        from {
+            opacity: 0;
+            transform: translateX(-100%);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0%);
+        }
+    }
+
+    @keyframes Zoom {
+
+        from {
+            transform: scale(0%);
+        }
+
+        to {
+            transform: scale(100%);
+        }
+    }
+
+    @keyframes Rotate {
+
+        from {
+            transform: rotateY(0deg);
+        }
+
+        to {
+            transform: rotateY(360deg);
+        }
+    }
+
+    /*MENU*/
+    .menu {
+        display: flex;
+        justify-content: space-around;
+        padding: 1%;
+    }
+
+  /*TIPO DE ANIMACIONES PARA EL MENU DE NAVEGACION*/
+  .nav{
+    position: relative;
+    padding: 1%;
+  }
+
+    .Ver1:before{
+      content:'';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 100%;
+      border-bottom: 0.1rem solid var(--text);
+      opacity: 0;
+      transition: .5s;   
+    }
+    
+    .Ver1:hover:before{
+      width: 100%;
+      opacity: 1;
+    }
+
+    .Ver2:before{
+      content:'';
+      position: absolute;
+      top: -2%;
+      left: 0;
+      width: 0%;
+      height: 100%;
+      border-top: 0.1rem solid var(--text);
+      opacity: 0;
+      transition: .4s;   
+    }
+    
+    .Ver2:hover:before{
+      width: 100%;
+      opacity: 1;
+    }
+
+    .Ver3:before{
+      content:'';
+      position: absolute;
+      top: -2%;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-top: 0.1rem solid var(--text);
+      border-bottom: 0.1rem solid var(--text);
+      transform: scaleY(2);
+      opacity: 0;
+      transition: .4s;   
+    }
+    
+    .Ver3:hover:before{
+      transform: scaleY(1);
+      opacity: 1;
+    }
+
+    .Ver4:before{
+      content:'';
+      position: absolute;
+      top: 0;
+      left: -2%;
+      width: 100%;
+      height: 100%;
+      border-right: 0.1rem solid var(--text);
+      border-left: 0.1rem solid var(--text);
+      transform: scaleX(2);
+      opacity: 0;
+      transition: .4s;   
+    }
+    
+    .Ver4:hover:before{
+      transform: scaleX(1);
+      opacity: 1;
+    }
+    
+    .Ver5:before{
+      content:'';
+      position: absolute;
+      top: -2%;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-top: 0.1rem solid var(--text);
+      border-bottom: 0.1rem solid var(--text);
+      transform: scaleX(1.5);
+      opacity: 0;
+      transition: .4s;
+      
+    }
+    
+    .Ver5:hover:before{
+      transform: scaleX(1);
+      opacity: 1;
+    }
+
+
+

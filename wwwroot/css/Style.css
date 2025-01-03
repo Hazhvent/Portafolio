@@ -1,0 +1,90 @@
+  /*CONFIGURACION DE COLORES*/
+  :root{
+    --page: #253448;       
+    --section: #555656;    
+    --text: #faf9cb;        
+    --shadow01: #1c1d1e;         
+    --shadow02: #e13711; 
+    }
+
+/*SECCION: ENCABEZADO*/ 
+  header{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    margin-top: 1rem;
+  }
+ 
+/*SECCION: PROYECTOS*/ 
+.projects{
+  display: flex;
+  justify-content: center;
+  background-color: var(--section);
+  padding: 1%;
+}
+
+    .icon {
+        margin: auto;
+        background-image: url("/img/home.png");
+    }
+
+.file {
+  text-align: center;
+  border: solid 0.5rem var(--page);
+}
+
+#list{
+  height: 3rem;
+  width: 12.5rem;
+  background-color: var(--section);
+  color: var(--text);
+}
+
+.cell{  
+  background-color: var(--page);
+  padding: 1rem;
+  border: 0.1rem solid var(--section);
+  color: var(--text);
+}
+
+    #go {
+        height: 4rem;
+        width: 4rem;
+        border-radius: 0.25rem;
+        background-color: var(--section);
+        background-image: url("/img/go.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 75%;
+        margin: 0;
+    }
+
+    #go:hover {
+        cursor: pointer;
+    }
+                            
+/*SECCION: PIE DE PAGINA*/
+  footer{
+    padding: 4%;
+  }
+
+  .contact{
+    padding: 2%;
+  }
+
+    .contact h2 {
+        text-align: center;
+    }
+
+.info {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    align-items: center;
+}
+
+  .info p{
+    padding: 0.3rem;
+  }

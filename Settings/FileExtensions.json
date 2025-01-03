@@ -1,0 +1,22 @@
+﻿{
+  "AllowedExtensions": {
+    "Images": [
+      ".jpg",
+      ".jpeg",
+      ".png",
+      ".gif",
+      ".bmp",
+      ".svg",
+      ".webp"
+    ],
+    "Documents": [
+      ".docx",
+      ".pdf"
+    ],
+    "Videos": [
+      ".mp4",
+      ".avi",
+      ".wmv"
+    ]
+  }
+}

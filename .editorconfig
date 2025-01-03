@@ -1,0 +1,16 @@
+﻿[*.cs]
+
+# CS8618: Un campo que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de declararlo como que admite un valor NULL.
+dotnet_diagnostic.CS8618.severity = none
+
+# CS8600: Se va a convertir un literal nulo o un posible valor nulo en un tipo que no acepta valores NULL
+dotnet_diagnostic.CS8600.severity = none
+
+# Default severity for all analyzer diagnostics
+dotnet_analyzer_diagnostic.severity = none
+
+# CS8603: Posible tipo de valor devuelto de referencia nulo
+dotnet_diagnostic.CS8603.severity = none
+
+# CS8604: Posible argumento de referencia nulo
+dotnet_diagnostic.CS8604.severity = none

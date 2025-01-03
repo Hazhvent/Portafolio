@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/Settings.css">
+    <link rel="stylesheet" href="~/css/Style04.css">
+    <!--FONT ICONS-->
+    <link href="~/fonts/css/fontawesome.css" rel="stylesheet" />
+    <link href="~/fonts/css/solid.css" rel="stylesheet" />
+
+    <title>MovieStorage</title>
+</head>
+<body>
+
+    <header class="container">
+        <h1 class="flashlight">MOVIE STORAGE <i class="fa-solid fa-video flashlight"></i></h1>
+        <div class="header-box">
+            <!--Boton Logout: Esperando implementacion--> <!--<a href=""><i class="lni lni-exit"></i></a>-->
+        </div>
+    </header>
+
+    <section class="container">
+        <div id="results" class="fake-margin">
+            <h2 class="object__name"><i class="fa-regular fa-rectangle-list"></i> Resultados</h2>
+            <div id="message"></div>
+        </div>
+        <div class="store">
+            <div class="filters fake-margin">
+                <h2 class="filter-text"><i class="fa-solid fa-check-to-slot"></i> Filtros</h2>
+                <div class="filters-box">
+                    <div class="capsule">
+                        <h3 class="filter-text">Género</h3>
+                        <div class="checkbox-container">
+                            <div class="checkbox-item">
+                                <input class="filter" name="genre" type="checkbox" value="1">
+                                <label>Apocaliptico</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input class="filter" name="genre" type="checkbox" value="2">
+                                <label>Fantasia</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input class="filter" name="genre" type="checkbox" value="3">
+                                <label>Terror</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input class="filter" name="genre" type="checkbox" value="4">
+                                <label>Thriller</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input class="filter" name="genre" type="checkbox" value="5">
+                                <label>Romance</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input class="filter" name="genre" type="checkbox" value="6">
+                                <label>Anime</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="capsule">
+                        <h3 class="filter-text">Version</h3>
+                        <div class="radio-container">
+                            <div class="radio-item">
+                                <input class="filter" name="version" type="radio" value="0">
+                                <label>Subtitulada</label>
+                            </div>
+                            <div class="radio-item">
+                                <input class="filter" name="version" type="radio" value="1">
+                                <label>Doblada</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="capsule">
+                        <h3 class="filter-text">Publico</h3>
+                        <div class="checkbox-container">
+                            <div class="checkbox-item">
+                                <input class="filter" name="class" type="checkbox" value="1">
+                                <label>Todos</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input class="filter" name="class" type="checkbox" value="2">
+                                <label>Adolescentes</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input class="filter" name="class" type="checkbox" value="3">
+                                <label>Adultos</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button id="reset">Resetear</button>
+                </div>
+            </div>
+            <div class="block"></div>
+        </div>
+        <div class="navbar fake-margin">
+            <button id="back" class="navitem boton arrow left fake-margin"></button>
+            <input id="page" class="navitem page fake-margin" type="number" min="1" value="1">
+            <button id="find" class="navitem boton find fake-margin"></button>
+            <button id="front" class="navitem boton arrow right fake-margin"></button>
+        </div>
+    </section>
+
+    <script src="~/js/Pagination.js"></script>
+    <script src="~/js/Home.js"></script>
+</body>
+</html>

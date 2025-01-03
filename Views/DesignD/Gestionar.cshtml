@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/Settings.css">
+    <link rel="stylesheet" href="~/css/Style04.css">
+    <!--FONT ICONS-->
+    <link href="~/fonts/css/fontawesome.css" rel="stylesheet" />
+    <link href="~/fonts/css/solid.css" rel="stylesheet" />
+
+    <title>MovieStorage</title>
+</head>
+<body>
+
+    <header class="container">
+        <h1 class="flashlight">MOVIE STORAGE <i class="fa-solid fa-video flashlight"></i></h1>
+        <div class="header-box">  
+            <a href="/DesignD"><i class="fa-solid fa-hand-point-left"></i></a>
+            <!--Boton Logout: Esperando implementacion--> <!--<a href=""><i class="lni lni-exit"></i></a>-->
+            </div>
+    </header>
+
+     <section class="container">
+         <div class="manage">
+             <div class="manage__half">
+                 <div class="toggle">
+                     <label class="toggle__area">
+                        <input id="toggle" type="checkbox" class="toggle__check"/>
+                        <span class="toggle__button">
+                            <i class="fa-solid fa-file-circle-plus toggle__action"></i>
+                            <i class="fa-solid fa-wrench toggle__action"></i>   
+                        </span>
+                     </label>
+                 </div>
+                <input id="name" type="text" class="manage__name" placeholder="Ingresa el nombre..."/>
+                <div class="manage__img">
+                    <div class="here">
+                        <h3>Subir imagen aquí</h3>
+                        <i class="lni lni-image"></i>
+                    </div>
+                </div>
+                <div class="manage__options">
+                    <button id="upload"><i class="fa-solid fa-arrow-up-from-bracket"></i></button>
+                    <input type="file" id="cover" name="file">
+                </div>              
+             </div>
+             <div class="manage__half">
+                 <table class="manage__table">
+                    <tr>
+                        <td colspan="2" class="manage__cell"><h2>Detalles <i class="lni lni-apartment"></i></h2></td>
+                    </tr>
+                     <tr>
+                        <td class="manage__cell"><h3>Genero</h3></td>
+                        <td class="manage__cell"><select id="gen">
+                            <option value="0">Elegir</option>
+                        </select></td>
+                     </tr>
+                    <tr>
+                        <td class="manage__cell"><h3>Clasificacion</h3></td>
+                        <td class="manage__cell"><select id="class">
+                                <option value="0">Elegir</option>
+                        </select></td>
+                    </tr>
+                    <tr>
+                        <td class="manage__cell"><h3>Version</h3></td>
+                        <td class="manage__cell">
+                            <div class="radio-container">
+                                <div class="radio-item">
+                                    <input id="sub" name="version" type="radio" value="0">
+                                    <label>Subtitulada</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input id="dob" name="version" type="radio" value="1">
+                                    <label>Doblada</label>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                 </table>
+                <div class="manage__options">
+                    <button id="switch"><i id="state" class="fa-solid"></i></button> 
+                    <button id="save"><i class="fa-solid fa-floppy-disk"></i></button>
+                 </div>               
+             </div>
+         </div>
+     </section>
+
+    <script src="~/js/Manage.js"></script>
+</body>
+</html>
