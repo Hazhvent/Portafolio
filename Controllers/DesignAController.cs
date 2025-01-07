@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Portafolio.Dto.Requests;
-using Portafolio.Dto.Responses;
 using Portafolio.Entities;
 using Portafolio.Services;
 
@@ -8,53 +6,82 @@ namespace Portafolio.Controllers
 {
     public class DesignAController : Controller
     {
+        //SERVICIO DE MANTENIMIENTO
+        private readonly StorageService _storageService;
+        public DesignAController(StorageService storageService)
+        {
+            _storageService = storageService;
+        }
         public IActionResult Index()
         {
             return View();
         }
 
-        //SERVICIO DE INVENTARIO
-        private readonly InventoryService _inventoryService;
-        public DesignAController(InventoryService inventoryService)
+        public IActionResult Gestionar()
         {
-            _inventoryService = inventoryService;
+            return View();
         }
 
-        //LISTAR GRAFICAS (INCLUYE PAGINACION)
- 
-        [HttpGet, ActionName("Read")]
-        public Pagination<GraphicResponse> Leer([FromForm] int page, [FromForm] int itemsPerPage)
+        //CONSULTAR PELICULA
+        public Pelicula GetMovie(int id)
         {
-            return _inventoryService.ListarGraficas(page, itemsPerPage);
+            return _storageService.BuscarPelicula(id);
         }
-           
-        //CREAR GRAFICA
-        [HttpPost, ActionName("Create")]
-        public int Crear([FromBody] GraphicRequest grafica)
+       
+        //LISTAR PELICULAS
+        [HttpGet, ActionName("Read1")]
+        public List<Pelicula> Movies()
         {
-            return _inventoryService.CrearGrafica(grafica);
+            return _storageService.ListarPeliculas();
+        }
+        //LISTAR GENEROS
+        [HttpGet, ActionName("Read2")]
+        public List<Genero> Genres()
+        {
+            return _storageService.ListarGeneros();
+        }
+        //LISTAR CLASIFICACIONES
+        [HttpGet, ActionName("Read3")]
+        public List<Clasificacion> Class()
+        {
+            return _storageService.ListarClasificaciones();
         }
 
-        //ACTUALIZAR GRAFICA
-        [HttpPut, ActionName("Update")]
-        public bool Actualizar(int id, [FromBody] GraphicRequest grafica)
-        {
-            return _inventoryService.ActualizarGrafica(id, grafica);
-        }
-
-        //CAMBIAR ESTADO GRAFICA
+        //CAMBIAR ESTADO PELICULA
         [HttpPatch, ActionName("Switch")]
-        public bool Switch(int id)
+        public bool? Switch(int id)
         {
-            return _inventoryService.CambiarEstado(id);
+            return _storageService.CambiarEstado(id);
         }
 
-        //INSERTAR ADJUNTOS
-        [HttpPost, ActionName("Attached")]
-        public bool Adjuntos([FromForm] int graphicId, IFormFile imagen, IFormFile documento)
+        //CREAR PELICULA
+        [HttpPost, ActionName("Create")]
+        public int Crear([FromBody] Pelicula pelicula)
         {
-            return _inventoryService.InsertarAdjuntos(graphicId, imagen, documento);
+            return _storageService.CrearPelicula(pelicula);
         }
 
+        //ACTUALIZAR PELICULA
+        [HttpPut, ActionName("Update")]
+        public int Editar([FromBody] Pelicula pelicula)
+        {
+            return _storageService.EditarPelicula(pelicula);
+        }
+        //ACTUALIZAR COVER DE PELICULA
+        [HttpPost, ActionName("Upload")]
+        public bool Upload([FromForm] int id, [FromForm] IFormFile file)
+        {
+            if (file != null)
+            {
+                if (_storageService.ActualizarCover(id, file))
+                {
+                    return true;
+                }
+                else {
+                    return false;
+                }              
+            }
+            return false;
+        }
     }
 }

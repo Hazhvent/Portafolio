@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Portafolio.Dto.Requests;
+using Portafolio.Dto.Responses;
 using Portafolio.Entities;
 using Portafolio.Services;
 
@@ -6,82 +8,53 @@ namespace Portafolio.Controllers
 {
     public class DesignDController : Controller
     {
-        //SERVICIO DE MANTENIMIENTO
-        private readonly StorageService _storageService;
-        public DesignDController(StorageService storageService)
-        {
-            _storageService = storageService;
-        }
         public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult Gestionar()
+        //SERVICIO DE INVENTARIO
+        private readonly InventoryService _inventoryService;
+        public DesignDController(InventoryService inventoryService)
         {
-            return View();
+            _inventoryService = inventoryService;
         }
 
-        //CONSULTAR PELICULA
-        public Pelicula GetMovie(int id)
+        //LISTAR GRAFICAS (INCLUYE PAGINACION)
+ 
+        [HttpGet, ActionName("Read")]
+        public Pagination<GraphicResponse> Leer([FromForm] int page, [FromForm] int itemsPerPage)
         {
-            return _storageService.BuscarPelicula(id);
+            return _inventoryService.ListarGraficas(page, itemsPerPage);
         }
-       
-        //LISTAR PELICULAS
-        [HttpGet, ActionName("Read1")]
-        public List<Pelicula> Movies()
-        {
-            return _storageService.ListarPeliculas();
-        }
-        //LISTAR GENEROS
-        [HttpGet, ActionName("Read2")]
-        public List<Genero> Genres()
-        {
-            return _storageService.ListarGeneros();
-        }
-        //LISTAR CLASIFICACIONES
-        [HttpGet, ActionName("Read3")]
-        public List<Clasificacion> Class()
-        {
-            return _storageService.ListarClasificaciones();
-        }
-
-        //CAMBIAR ESTADO PELICULA
-        [HttpPatch, ActionName("Switch")]
-        public bool? Switch(int id)
-        {
-            return _storageService.CambiarEstado(id);
-        }
-
-        //CREAR PELICULA
+           
+        //CREAR GRAFICA
         [HttpPost, ActionName("Create")]
-        public int Crear([FromBody] Pelicula pelicula)
+        public int Crear([FromBody] GraphicRequest grafica)
         {
-            return _storageService.CrearPelicula(pelicula);
+            return _inventoryService.CrearGrafica(grafica);
         }
 
-        //ACTUALIZAR PELICULA
+        //ACTUALIZAR GRAFICA
         [HttpPut, ActionName("Update")]
-        public int Editar([FromBody] Pelicula pelicula)
+        public bool Actualizar(int id, [FromBody] GraphicRequest grafica)
         {
-            return _storageService.EditarPelicula(pelicula);
+            return _inventoryService.ActualizarGrafica(id, grafica);
         }
-        //ACTUALIZAR COVER DE PELICULA
-        [HttpPost, ActionName("Upload")]
-        public bool Upload([FromForm] int id, [FromForm] IFormFile file)
+
+        //CAMBIAR ESTADO GRAFICA
+        [HttpPatch, ActionName("Switch")]
+        public bool Switch(int id)
         {
-            if (file != null)
-            {
-                if (_storageService.ActualizarCover(id, file))
-                {
-                    return true;
-                }
-                else {
-                    return false;
-                }              
-            }
-            return false;
+            return _inventoryService.CambiarEstado(id);
         }
+
+        //INSERTAR ADJUNTOS
+        [HttpPost, ActionName("Attached")]
+        public bool Adjuntos([FromForm] int graphicId, IFormFile imagen, IFormFile documento)
+        {
+            return _inventoryService.InsertarAdjuntos(graphicId, imagen, documento);
+        }
+
     }
 }

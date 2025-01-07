@@ -22,7 +22,7 @@ Init();
     //CONSULTA LA LISTA DE PELICULAS
     function GetMovies() {
         const action = "Read1";
-        const url = "DesignD/" + action;
+        const url = "DesignA/" + action;
         fetch(url, {
             method: "GET"
         })

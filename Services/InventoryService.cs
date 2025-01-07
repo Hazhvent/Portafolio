@@ -14,7 +14,7 @@ namespace Portafolio.Services
         //SERVICIO DE GESTION DE ARCHIVOS
         private readonly FileManagerService _fileManagerService;
         // NOMBRE DE LA LLAVE DE LA CONEXION EN EL ARCHIVO DE CONFIGURACION
-        private readonly string database = "DesignA";
+        private readonly string database = "DesignD";
         //RUTA DE LA CARPETA DE IMAGENES
         private readonly string Images = "img01/";
         //RUTA DE LA CARPETA DE DOCUMENTOS

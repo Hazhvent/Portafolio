@@ -29,7 +29,7 @@ namespace Portafolio.Services
         {
             if (!optionsBuilder.IsConfigured)
             {
-                var connectionString = _connectionService.GetConnection("DesignD");
+                var connectionString = _connectionService.GetConnection("DesignA");
                 optionsBuilder.UseSqlServer(connectionString);
             }
         }

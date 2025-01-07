@@ -24,9 +24,9 @@ namespace Portafolio.Controllers
         [HttpGet, ActionName("Projects")]
         public List<ExpandoObject> Projects() {
             List<ExpandoObject> temp = new();
+            AddProject(temp, "MovieStorage", "Mantenimiento", "Inventario", 2, "DesignA");
             AddProject(temp, "RefugioCitadino", "Reseñas", "Hospedaje", 1, "DesignB");
-            AddProject(temp, "CoffeTime", "Reservaciones", "Alimentacion", 1, "DesignC");
-            AddProject(temp, "MovieStorage", "Mantenimiento", "Inventario", 2, "DesignD");
+            AddProject(temp, "CoffeTime", "Reservaciones", "Alimentacion", 1, "DesignC");       
             return temp;
         }
 
