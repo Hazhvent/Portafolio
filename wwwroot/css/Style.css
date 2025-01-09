@@ -25,10 +25,9 @@
   padding: 1%;
 }
 
-    .icon {
-        margin: auto;
-        background-image: url("/img/home.png");
-    }
+.home {
+    font-size: 2.5rem;
+}
 
 .file {
   text-align: center;

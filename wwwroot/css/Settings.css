@@ -194,24 +194,6 @@ button {
             transform: translateX(3.5rem);
         }
 
-  /*BOTON PARA VOLVER A LA PAGINA PRINCIPAL*/
-.home {
-    width: 5rem;
-    height: 5rem;
-    top: 87.5%;
-    left: 95%;
-    position: fixed;
-    z-index: 0;
-    background-image: url("/img/home.png");
-    background-size: contain;
-    transition: all 0.25s ease-in-out;
-}
-
-    .home:hover {
-        cursor: pointer;
-        scale: 1.25;
-    }
-
   /*MASCARA DE OPACIDAD PARA IMAGENES DE FONDO*/
   .mask{
     width: 100%;

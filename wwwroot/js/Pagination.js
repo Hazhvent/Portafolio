@@ -198,7 +198,7 @@ function Controls(){
     function GetLink(obj){
       let temp = document.createElement("a");
           temp.classList.add("object__link");
-          temp.href = "DesignD/Gestionar?id=" + obj.id;
+          temp.href = "DesignA/Gestionar?id=" + obj.id;
           temp.innerHTML = "Gestionar";
       return temp; 
     }
