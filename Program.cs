@@ -7,11 +7,6 @@ var builder = WebApplication.CreateBuilder(args);
 //ARCHIVOS DE CONFIGURACION
 //optional : false (EL ARCHIVO NO ES OPCIONAL Y LA API NO CARGARA SI NO SE PUEDE CARGAR EL ARCHIVO) 
 //reloadOnChange : true (EL ARCHIVO ADMITE CAMBIOS Y SE RECARGARA CUANDO LOS DETECTE)
-
-//CONFIGURACION DE ENTORNO SEGUN CONTEXTO
-builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-builder.Configuration.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true);
-
 builder.Configuration.AddJsonFile("Settings/AttachmentFiles.json", optional: false, reloadOnChange: true);
 builder.Configuration.AddJsonFile("Settings/Credentials.json", optional: false, reloadOnChange: true);
 builder.Configuration.AddJsonFile("Settings/Providers.json", optional: false, reloadOnChange: true);
