@@ -30,19 +30,31 @@ END;
 GO
 
 
+--MODELO
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Modelo')
+BEGIN
+    CREATE TABLE Modelo (
+        Id INT PRIMARY KEY IDENTITY(1,1),
+        Nombre NVARCHAR(50) NOT NULL UNIQUE,
+		Vram TINYINT NOT NULL,
+		Precio DECIMAL(8,2) NOT NULL
+    );
+END;
+GO
+
+
 --GRAFICA
 IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Graphic')
 BEGIN
     CREATE TABLE Graphic (
         Id INT PRIMARY KEY IDENTITY(1,1),
         MarcaId INT,
-        SerieId INT,
-        Modelo NVARCHAR(100) NOT NULL UNIQUE, --NOMBRE DE LA TARJETA
-        Vram TINYINT NOT NULL,
-        Precio DECIMAL(8,2) NOT NULL,
-		Estado BIT NOT NULL,
+		ModeloId INT,
+		SerieId INT,
+		Estado BIT NOT NULL DEFAULT 0,
+
         FOREIGN KEY (MarcaId) REFERENCES Marca(Id),
-        FOREIGN KEY (SerieId) REFERENCES Serie(Id)
+		FOREIGN KEY (ModeloId) REFERENCES Modelo(Id)
     );
 END;
 GO
@@ -57,22 +69,6 @@ BEGIN
 END;
 GO
 
--- MOVIMIENTO
-IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Movimiento')
-BEGIN
-    CREATE TABLE Movimiento (
-        Id INT PRIMARY KEY IDENTITY(1,1),
-        TipoMovimientoId INT NOT NULL, 
-        Fecha VARCHAR(20) NOT NULL,
-        Cantidad INT NOT NULL,
-        GraphicId INT NOT NULL, 
-
-		FOREIGN KEY (GraphicId) REFERENCES Graphic(Id),
-        FOREIGN KEY (TipoMovimientoId) REFERENCES TipoMovimiento(Id)
-    );
-END;
-GO
-
 --STOCK
 IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Stock')
 BEGIN
@@ -82,10 +78,38 @@ BEGIN
         Cantidad INT DEFAULT 0,
         FechaUltimaModificacion VARCHAR(20) NOT NULL,
 
-        FOREIGN KEY (GraficaId) REFERENCES Graphic(Id),
-
+        FOREIGN KEY (GraficaId) REFERENCES Graphic(Id)
     );
 END;
+GO
+
+-- MOVIMIENTO
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Movimiento')
+BEGIN
+	CREATE TABLE Movimiento (
+		Id INT IDENTITY(1,1) PRIMARY KEY,
+		TipoMovimientoId INT,
+		Fecha VARCHAR(20),
+		Cantidad INT,
+		StockId INT, 
+
+		FOREIGN KEY (TipoMovimientoId) REFERENCES TipoMovimiento(Id),
+		FOREIGN KEY (StockId) REFERENCES Stock(Id) 
+	);
+END;
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Unidades')
+BEGIN
+CREATE TABLE Unidades (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    StockId INT,              
+    Licencia UNIQUEIDENTIFIER DEFAULT NEWID(),
+    FechaAdicion VARCHAR(20),  
+
+    FOREIGN KEY (StockId) REFERENCES Stock(Id) 
+);
+END
 GO
 
 
@@ -118,13 +142,9 @@ END;
 --INDICES NO AGRUPADOS
 CREATE NONCLUSTERED INDEX Marca ON Graphic (MarcaId);
 CREATE NONCLUSTERED INDEX Serie ON Graphic (SerieId);
-
--- INSERCCIONES
-INSERT INTO Marca (Nombre) VALUES ('Nvidia'), ('AMD');
-INSERT INTO TipoMovimiento (Nombre) VALUES ('Ingreso'), ('Devolución'), ('Venta');
-INSERT INTO Serie (Nombre) VALUES ('2000'), ('3000'), ('4000'), ('5000'), ('6000'), ('7000');
-INSERT INTO TipoAdjunto (Nombre) VALUES ('Cover'), ('Manual');
+CREATE NONCLUSTERED INDEX Modelo ON Graphic (ModeloId);
 GO
+
 
 --FUNCIONES
 CREATE OR ALTER FUNCTION KilobytesConverter
@@ -167,11 +187,11 @@ BEGIN
     WITH GraficasConAdjuntos AS (
         SELECT 
             g.Id AS GraphicId,
-            g.Modelo, 
             m.Nombre AS Marca, 
-            s.Nombre AS Serie, 
-            g.VRAM, 
-            g.Precio,
+            s.Serie AS Serie, 
+			n.Nombre as Modelo, 
+            n.VRAM, 
+            n.Precio,
             g.Estado,
             a.Id AS AdjuntoId,
             a.Ruta
@@ -179,16 +199,18 @@ BEGIN
             Graphic g
         INNER JOIN 
             Marca m ON g.MarcaID = m.Id
-        INNER JOIN 
-            Serie s ON g.SerieID = s.Id
+		INNER JOIN 
+            Serie n ON g.Serie = s.Id
+		INNER JOIN 
+            Modelo n ON g.ModeloId = n.Id
         LEFT JOIN 
             Adjunto a ON g.Id = a.GraphicID
     )
     SELECT 
-        GraphicId,
-        Modelo,
+        GraphicId,       
         Marca,
         Serie,
+		Modelo,
         VRAM,
         Precio,
         Estado,
@@ -207,19 +229,41 @@ BEGIN
 END;
 GO
 
+CREATE OR ALTER PROCEDURE InsertModel
+    @type CHAR(1),            -- Marca del Modelo
+    @nombre NVARCHAR(50),     
+    @vram TINYINT, 
+    @precio DECIMAL(8,2)
+AS
+BEGIN
+    -- Declaración de la variable fullname
+    DECLARE @fullname NVARCHAR(50);
+    
+    -- Evaluación del tipo (type) con un CASE
+    SET @fullname = CASE
+                        WHEN @type = 'G' THEN 'RTX ' + @nombre
+                        WHEN @type = 'R' THEN 'RX ' + @nombre
+                        ELSE @nombre -- En caso de que no sea 'G' ni 'R', se usa el nombre tal cual
+                    END;
+    
+    -- Inserción en la tabla Modelo
+    INSERT INTO Modelo (nombre, vram, precio)
+    VALUES (@fullname, @vram, @precio);
+END;
+GO
+
 
 CREATE OR ALTER PROCEDURE InsertarGrafica
     @MarcaID INT,
-    @SerieId INT,
-    @Modelo NVARCHAR(100),
-    @Vram TINYINT,
-    @Precio DECIMAL(18,2)
+    @ModeloId INT,
+	@SerieId INT
 AS
 BEGIN
     DECLARE @GraphicId INT;
+	DECLARE @Model NVARCHAR(50);
 
-    INSERT INTO Graphic (MarcaId, SerieId, Modelo, Vram, Precio, Estado)
-    VALUES (@MarcaID, @SerieId, @Modelo, @Vram, @Precio, 1);
+    INSERT INTO Graphic (MarcaId, SerieId, ModeloId, Estado)
+    VALUES (@MarcaID, @SerieId, @ModeloId, DEFAULT);
 
     -- Obtener el ID de la gráfica insertada
     SET @GraphicId = SCOPE_IDENTITY();
@@ -229,14 +273,12 @@ BEGIN
 END;
 GO
 
-
 CREATE OR ALTER PROCEDURE ActualizarGrafica
     @GraphicId INT,
     @MarcaId INT,
-    @SerieId INT,
-    @Modelo NVARCHAR(100),
-    @Vram TINYINT,
-    @Precio DECIMAL(18,2)
+    @ModeloId INT,
+	@SerieId INT
+
 AS
 BEGIN
     DECLARE @Response BIT;
@@ -248,10 +290,8 @@ BEGIN
         UPDATE Graphic
         SET 
             MarcaId = @MarcaId,
-            SerieId = @SerieId,
-            Modelo = @Modelo,
-            Vram = @Vram,
-            Precio = @Precio
+            ModeloId = @ModeloId,
+			SerieId = @SerieId
         WHERE Id = @GraphicId;
 
         -- Indicar que la actualización fue exitosa
@@ -275,14 +315,17 @@ AS
 BEGIN
     DECLARE @Modelo NVARCHAR(100);
 
-    SELECT @Modelo = Modelo
-    FROM Graphic
-    WHERE Id = @GraphicId;
+    -- Obtener el nombre del modelo relacionado con el GraphicId
+    SELECT @Modelo = m.Nombre
+    FROM Graphic g
+    INNER JOIN Modelo m ON g.ModeloId = m.Id
+    WHERE g.Id = @GraphicId;
 
     -- Devolver el modelo encontrado
     SELECT @Modelo AS Modelo;
 END;
 GO
+
 
 CREATE OR ALTER PROCEDURE MakeAttached
     @Graphic INT,
@@ -350,6 +393,102 @@ BEGIN
 END;
 GO
 
+--INSERCCION DE UNIDAD
+CREATE OR ALTER PROCEDURE InsertarUnidad
+    @StockId INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @FechaActual VARCHAR(20);
+
+    -- Obtener la fecha actual formateada usando la función personalizada
+    SET @FechaActual = dbo.DateFormatter(GETDATE());
+
+    -- Insertar la unidad en la tabla Unidades, generando automáticamente el valor para Licencia
+    INSERT INTO Unidades (StockId, Licencia, FechaAdicion)
+    VALUES (@StockId, DEFAULT, @FechaActual);
+END;
+GO
+
+
+--DETONADORES
+
+CREATE OR ALTER TRIGGER StartManagement
+ON Graphic
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Declarar variables para los datos de la gráfica insertada
+    DECLARE @GraphicId INT, @FechaActual VARCHAR(20)
+
+    -- Obtener el ID de la gráfica insertada
+    SELECT @GraphicId = Id FROM INSERTED;
+
+    -- Formatear la fecha actual usando la función personalizada
+    SET @FechaActual = dbo.DateFormatter(GETDATE());
+
+    -- Crear un nuevo registro de stock con el valor predeterminado
+    INSERT INTO Stock (GraficaId, Cantidad, FechaUltimaModificacion)
+    VALUES (@GraphicId, DEFAULT, @FechaActual);
+
+END;
+GO
+
+CREATE OR ALTER TRIGGER MakeManagement
+ON Unidades
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Declarar variables para datos auxiliares
+    DECLARE @FechaActual VARCHAR(20), @TipoMovimientoId INT;
+
+    -- Obtener la fecha actual formateada usando la función personalizada
+    SET @FechaActual = dbo.DateFormatter(GETDATE());
+
+    -- Obtener el ID del tipo de movimiento "Ingreso"
+    SELECT @TipoMovimientoId = Id FROM TipoMovimiento WHERE Nombre = 'Ingreso';
+
+    -- Actualizar la cantidad en la tabla Stock consultado el numero de registros referidos al StockId
+	UPDATE Stock
+	SET Cantidad = (SELECT COUNT(*) FROM Unidades WHERE StockId = Stock.Id),
+		FechaUltimaModificacion = @FechaActual
+	--Consultamos los Id de stock usados en los registros hechos a Unidades
+	--(La tabla virtual INSERTED tambien los tiene por lo que seria mas sencillo consultar a esta ultima)
+	WHERE Id IN (SELECT StockId FROM INSERTED);
+
+    -- Registrar el movimiento en la tabla Movimiento después de actualizar el stock
+    INSERT INTO Movimiento (TipoMovimientoId, Fecha, Cantidad, StockId)
+    SELECT @TipoMovimientoId, @FechaActual, COUNT(*), StockId
+    FROM INSERTED
+    GROUP BY StockId;
+END;
+GO
+
+
+
+-- INSERCCIONES
+INSERT INTO Marca (Nombre) VALUES ('Nvidia'), ('AMD');
+INSERT INTO TipoMovimiento (Nombre) VALUES ('Ingreso'), ('Devolución'), ('Venta');
+INSERT INTO TipoAdjunto (Nombre) VALUES ('Cover'), ('Manual');
+
+EXEC InsertModel @type = 'G', @nombre = '2060', @vram = 6, @precio = 219.99;
+EXEC InsertModel @type = 'G', @nombre = '2060 Super', @vram = 8, @precio = 239.99;
+EXEC InsertModel @type = 'G', @nombre = '2070', @vram = 8, @precio = 299.99;
+EXEC InsertModel @type = 'G', @nombre = '2070 Super', @vram = 8, @precio = 349.99;
+EXEC InsertModel @type = 'R', @nombre = '6600', @vram = 8, @precio = 279.99;
+EXEC InsertModel @type = 'R', @nombre = '6600 XT', @vram = 8, @precio = 349.99;
+EXEC InsertModel @type = 'R', @nombre = '6700', @vram = 10, @precio = 449.99;
+EXEC InsertModel @type = 'R', @nombre = '6700 XT', @vram = 12, @precio = 479.99;
+EXEC InsertModel @type = 'G', @nombre = '2080', @vram = 8, @precio = 499.99;
+EXEC InsertModel @type = 'R', @nombre = '6800', @vram = 16, @precio = 599.99;
+EXEC InsertModel @type = 'G', @nombre = '2080 Super', @vram = 8, @precio = 599.99;
+EXEC InsertModel @type = 'G', @nombre = '2080 TI', @vram = 11, @precio = 799.99;
+GO
 
 --PRUEBAS
 SELECT * FROM Adjunto
@@ -361,3 +500,8 @@ GO
 EXEC ListarGraficas 1, 3
 GO
 
+SELECT * FROM Movimiento
+GO
+
+SELECT * FROM Stock
+GO

@@ -38,9 +38,7 @@ namespace Portafolio.Services
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("MarcaId", grafica.MarcaId);
                     cmd.Parameters.AddWithValue("SerieId", grafica.SerieId);
-                    cmd.Parameters.AddWithValue("Modelo", grafica.Modelo);
-                    cmd.Parameters.AddWithValue("Vram", grafica.Vram);
-                    cmd.Parameters.AddWithValue("Precio", grafica.Precio);
+                    cmd.Parameters.AddWithValue("ModeloId", grafica.ModeloId);
 
                     try
                     {
@@ -72,9 +70,7 @@ namespace Portafolio.Services
                     cmd.Parameters.AddWithValue("@GraphicId", graphicId);
                     cmd.Parameters.AddWithValue("@MarcaId", grafica.MarcaId);
                     cmd.Parameters.AddWithValue("@SerieId", grafica.SerieId);
-                    cmd.Parameters.AddWithValue("@Modelo", grafica.Modelo);
-                    cmd.Parameters.AddWithValue("@Vram", grafica.Vram);
-                    cmd.Parameters.AddWithValue("@Precio", grafica.Precio);
+                    cmd.Parameters.AddWithValue("ModeloId", grafica.ModeloId);
 
                     try
                     {
