@@ -54,6 +54,7 @@ BEGIN
 		Estado BIT NOT NULL DEFAULT 0,
 
         FOREIGN KEY (MarcaId) REFERENCES Marca(Id),
+		FOREIGN KEY (SerieId) REFERENCES Serie(Id),
 		FOREIGN KEY (ModeloId) REFERENCES Modelo(Id)
     );
 END;
@@ -188,7 +189,7 @@ BEGIN
         SELECT 
             g.Id AS GraphicId,
             m.Nombre AS Marca, 
-            s.Serie AS Serie, 
+            s.Nombre AS Serie, 
 			n.Nombre as Modelo, 
             n.VRAM, 
             n.Precio,
@@ -200,7 +201,7 @@ BEGIN
         INNER JOIN 
             Marca m ON g.MarcaID = m.Id
 		INNER JOIN 
-            Serie n ON g.Serie = s.Id
+            Serie s ON g.SerieId = s.Id
 		INNER JOIN 
             Modelo n ON g.ModeloId = n.Id
         LEFT JOIN 
@@ -474,6 +475,7 @@ GO
 -- INSERCCIONES
 INSERT INTO Marca (Nombre) VALUES ('Nvidia'), ('AMD');
 INSERT INTO TipoMovimiento (Nombre) VALUES ('Ingreso'), ('Devolución'), ('Venta');
+INSERT INTO Serie (Nombre) VALUES ('2000'), ('3000'), ('4000'), ('5000'), ('6000'), ('7000');
 INSERT INTO TipoAdjunto (Nombre) VALUES ('Cover'), ('Manual');
 
 EXEC InsertModel @type = 'G', @nombre = '2060', @vram = 6, @precio = 219.99;
@@ -491,6 +493,9 @@ EXEC InsertModel @type = 'G', @nombre = '2080 TI', @vram = 11, @precio = 799.99;
 GO
 
 --PRUEBAS
+SELECT * FROM Modelo
+GO
+
 SELECT * FROM Adjunto
 GO
 
