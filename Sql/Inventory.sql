@@ -402,13 +402,20 @@ BEGIN
     SET NOCOUNT ON;
 
     DECLARE @FechaActual VARCHAR(20);
+    DECLARE @Licencia UNIQUEIDENTIFIER;
 
     -- Obtener la fecha actual formateada usando la función personalizada
     SET @FechaActual = dbo.DateFormatter(GETDATE());
 
-    -- Insertar la unidad en la tabla Unidades, generando automáticamente el valor para Licencia
+    -- Generar un nuevo UID (Licencia)
+    SET @Licencia = NEWID();
+
+    -- Insertar la unidad en la tabla Unidades con el UID generado
     INSERT INTO Unidades (StockId, Licencia, FechaAdicion)
-    VALUES (@StockId, DEFAULT, @FechaActual);
+    VALUES (@StockId, @Licencia, @FechaActual);
+
+    -- Devolver el Licencia generado
+    SELECT @Licencia AS LicenciaGenerada;
 END;
 GO
 
@@ -509,4 +516,5 @@ SELECT * FROM Movimiento
 GO
 
 SELECT * FROM Stock
-GO
+GOSELECT * FROM Unidades
+GOEXEC InsertarUnidad @StockId = 2EXEC InsertarUnidad @StockId = 3EXEC InsertarUnidad @StockId = 4EXEC InsertarUnidad @StockId = 5EXEC InsertarUnidad @StockId = 7

@@ -26,7 +26,6 @@ namespace Portafolio.Services
             _fileManagerService = fileManagerService;
         }
 
-        
         public int CrearGrafica(GraphicRequest grafica)
         {
             int graphicId;
@@ -334,6 +333,33 @@ namespace Portafolio.Services
             return pagination;
         }
 
+        //INSERTAR UNIDAD DE GRAFICA
+        public string InsertarUnidad(int Id)
+        {
+            string resultado;
+
+            using (var conn = new SqlConnection(_connectionService.GetConnection(database)))
+            {
+                using (var cmd = new SqlCommand("InsertarUnidad", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@StockId", Id);
+
+                    try
+                    {
+                        conn.Open();
+                        // Ejecutar el procedimiento y obtener el resultado de la operación
+                        resultado = cmd.ExecuteScalar()?.ToString();
+                    }
+                    catch (SqlException ex)
+                    {
+                        throw new Exception("Error al insertar unidad", ex);
+                    }
+                }
+            }
+
+            return resultado;
+        }
 
     }
 }

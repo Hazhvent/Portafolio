@@ -56,5 +56,13 @@ namespace Portafolio.Controllers
             return _inventoryService.InsertarAdjuntos(graphicId, imagen, documento);
         }
 
+        //CAMBIAR ESTADO GRAFICA
+        [HttpGet, ActionName("AddUnit")]
+        public string AddUnit(int id)
+        {
+            return _inventoryService.InsertarUnidad(id);
+        }
+
+
     }
 }
