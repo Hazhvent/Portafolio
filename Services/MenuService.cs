@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using Dapper;
 using Microsoft.Data.SqlClient;
-using Portafolio.Dto;
+using Portafolio.Dto.Responses;
 
 namespace Portafolio.Services
 {
@@ -18,10 +18,10 @@ namespace Portafolio.Services
             _connectionService = connectionService;
         }
 
-        public List<Menu> ListarMenu()
+        public List<MenuResponse> ListarMenu()
         {
             using var conn = new SqlConnection(_connectionService.GetConnection(database));
-            var menuItems = conn.Query<Menu>("LISTAR_MENU", commandType: CommandType.StoredProcedure).ToList();
+            var menuItems = conn.Query<MenuResponse>("LISTAR_MENU", commandType: CommandType.StoredProcedure).ToList();
             return menuItems;
         }
     }

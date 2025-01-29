@@ -5,6 +5,8 @@ using Portafolio.Helpers;
 using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 using Portafolio.Dto;
 using Portafolio.Dto.Responses;
+using Portafolio.Dto.Requests;
+using Portafolio.Entities;
 
 namespace Portafolio.Services
 {   //TECNOLOGIA DE CONEXION: DAPPER
@@ -48,7 +50,7 @@ namespace Portafolio.Services
             return temp;
         }
 
-        public bool Reservar(Reservacion reserva)
+        public bool Reservar(ReservationRequest reserva)
         {
             string code = RandomGenerator.SetCode(6);
             reserva.Codigo = code;

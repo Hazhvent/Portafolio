@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Portafolio.Dto;
 using Portafolio.Dto.Requests;
 using Portafolio.Dto.Responses;
-using Portafolio.Entities;
 using Portafolio.Services;
 
 namespace Portafolio.Controllers

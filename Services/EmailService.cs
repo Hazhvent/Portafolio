@@ -1,4 +1,4 @@
-﻿using Portafolio.Entities;
+﻿using Portafolio.Dto;
 using Portafolio.Helpers;
 using System.Diagnostics;
 using System.Net;

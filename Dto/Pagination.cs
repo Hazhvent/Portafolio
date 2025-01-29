@@ -1,4 +1,4 @@
-﻿namespace Portafolio.Entities
+﻿namespace Portafolio.Dto
 {
     public class Pagination<T>
     {
@@ -6,6 +6,6 @@
         public int Items { get; set; } //CANTIDAD DE ITEMS POR PAGINA
         public int Total { get; set; } //TOTAL DE REGISTROS
         public int Pages { get; set; } //NRO DE PAGINAS 
-        
+
     }
 }

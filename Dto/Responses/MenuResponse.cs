@@ -1,6 +1,6 @@
-﻿namespace Portafolio.Dto
+﻿namespace Portafolio.Dto.Responses
 {
-    public class Menu
+    public class MenuResponse
     {
         public string Nombre { get; set; }
         public decimal Precio { get; set; }

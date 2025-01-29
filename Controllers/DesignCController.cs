@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Portafolio.Dto;
+using Portafolio.Dto.Requests;
 using Portafolio.Dto.Responses;
+using Portafolio.Entities;
 using Portafolio.Helpers;
 using Portafolio.Services;
 using System.Diagnostics;
@@ -36,7 +38,7 @@ namespace Portafolio.Controllers
 
         //LISTAR MENU
         [HttpGet, ActionName("Read1")]
-        public List<Menu> LeerMenu()
+        public List<MenuResponse> LeerMenu()
         {
             return _menuService.ListarMenu();
         }
@@ -57,7 +59,7 @@ namespace Portafolio.Controllers
 
         //HACER RESERVACION
         [HttpPost, ActionName("Create")]
-        public bool Crear([FromBody] Reservacion reserva) { 
+        public bool Crear([FromBody] ReservationRequest reserva) { 
           
             return _reservacionService.Reservar(reserva);
         }

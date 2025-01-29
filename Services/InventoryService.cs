@@ -1,7 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
+using Portafolio.Dto;
 using Portafolio.Dto.Requests;
 using Portafolio.Dto.Responses;
-using Portafolio.Entities;
 using Portafolio.Helpers;
 using System.Data;
 

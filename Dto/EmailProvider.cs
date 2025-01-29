@@ -1,4 +1,4 @@
-﻿namespace Portafolio.Entities
+﻿namespace Portafolio.Dto
 {
     public class EmailProvider
     {

@@ -1,4 +1,4 @@
-﻿namespace Portafolio.Dto
+﻿namespace Portafolio.Entities
 {
     public class Horario
     {

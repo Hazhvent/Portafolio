@@ -1,6 +1,6 @@
-﻿namespace Portafolio.Dto
+﻿namespace Portafolio.Dto.Requests
 {
-    public class Reservacion
+    public class ReservationRequest
     {
         public string Nombre { get; set; }
         public string Apellido { get; set; }
